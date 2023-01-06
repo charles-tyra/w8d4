@@ -1,3 +1,7 @@
+Function.prototype.myBind = function(context) {
+   return () => {this.apply(context)}
+}
+
 // class Clock {
 //    constructor() {
 //       // 1. Create a Date object.
@@ -10,7 +14,7 @@
 //       this.printTime();
 //       // 4. Schedule the tick at 1 second intervals.
 //       // while (true) {
-//       const clockTick = this._tick.bind(this)
+//       const clockTick = this._tick.myBind(this)
   
 //       setInterval(clockTick, 1000); 
      
@@ -36,7 +40,7 @@
       
 //       console.log(stringH + ':' + stringM + ':' + stringS)
 //    }
-
+//
 //    _tick() {
 //       // 1. Increment the time by one second.
 //       this.s += 1;
@@ -52,32 +56,62 @@
 //          this.h = 0;
 //       };
 //       // 2. Call printTime.
-//  
+ 
 //       this.printTime();
 //    }
 // }
 
 // const clock = new Clock();
-const readline = require("readline");
-const rl = readline.createInterface({
-   input: process.stdin,
-   output: process.stdout
-});
 
 
-const addNumbers = function(sum, numsLeft, completionCallback) {
-   if (numsLeft > 0) {
-      rl.question ('Enter a number ', answer => {
-         sum += parseInt(answer);
-         console.log(`The sum is now ${sum}`)
-         addNumbers(sum, numsLeft - 1, completionCallback)
-      })
-   }
-   else {
-      completionCallback(sum);
-      rl.close();
-   };
+
+// const readline = require("readline");
+// const rl = readline.createInterface({
+//    input: process.stdin,
+//    output: process.stdout
+// });
+
+
+// const addNumbers = function(sum, numsLeft, completionCallback) {
+//    if (numsLeft > 0) {
+//       rl.question ('Enter a number ', answer => {
+//          sum += parseInt(answer);
+//          console.log(`The sum is now ${sum}`)
+//          addNumbers(sum, numsLeft - 1, completionCallback)
+//       })
+//    }
+//    else {
+//       completionCallback(sum);
+//       rl.close();
+//    };
   
-}; 
+// }; 
 
-addNumbers(0, 3, sum => console.log(`Total Sum is: ${sum}`));
+// addNumbers(0, 3, sum => console.log(`Total Sum is: ${sum}`));
+
+
+
+// Function.prototype.myBind = (context) => {
+//    this = context;
+// }
+
+
+class Lamp {
+   constructor() {
+      this.name = "a lamp";
+   }
+}
+
+const turnOn = function () {
+   console.log("Turning on " + this.name);
+};
+
+const lamp = new Lamp();
+
+turnOn(); // should not work the way we want it to
+
+const boundTurnOn = turnOn.bind(lamp);
+const myBoundTurnOn = turnOn.myBind(lamp);
+
+boundTurnOn(); // should say "Turning on a lamp"
+myBoundTurnOn(); // should say "Turning on a lamp"
